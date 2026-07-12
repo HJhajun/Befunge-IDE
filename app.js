@@ -22,6 +22,7 @@ class BefungeIDE {
 
     this.cursor = { r: 0, c: 0 };
     this.editorDir = { dr: 0, dc: 1, symbol: '>' };
+    this.editorStringMode = false;
     this.moveHistory = [];
 
     this.selection = { start: { r: 0, c: 0 }, end: { r: 0, c: 0 } };
@@ -168,6 +169,8 @@ class BefungeIDE {
       rows: this.rows,
       cols: this.cols,
       cursor: { ...this.cursor },
+      editorDir: { ...this.editorDir },
+      editorStringMode: this.editorStringMode,
       selection: JSON.parse(JSON.stringify(this.selection))
     });
     if (this.undoStack.length > 200) this.undoStack.shift();
@@ -181,6 +184,8 @@ class BefungeIDE {
     this.rowsInput.value = String(this.rows);
     this.colsInput.value = String(this.cols);
     this.cursor = { ...state.cursor };
+    this.editorDir = state.editorDir ? { ...state.editorDir } : { dr: 0, dc: 1, symbol: '>' };
+    this.editorStringMode = Boolean(state.editorStringMode);
     this.selection = JSON.parse(JSON.stringify(state.selection));
     this.resetRuntime();
     this.renderAll();
@@ -215,7 +220,7 @@ class BefungeIDE {
         cell.className = 'cell';
         cell.dataset.r = String(r);
         cell.dataset.c = String(c);
-        cell.textContent = this.grid[r][c] === ' ' ? '·' : this.grid[r][c];
+        cell.textContent = this.grid[r][c] === ' ' ? '' : this.grid[r][c];
 
         if (this.cursor.r === r && this.cursor.c === c) cell.classList.add('cursor');
         if (r >= r1 && r <= r2 && c >= c1 && c <= c2) cell.classList.add('selected');
@@ -364,6 +369,9 @@ class BefungeIDE {
       e.preventDefault();
       this.pushUndoState();
       this.grid[this.cursor.r][this.cursor.c] = e.key;
+      if (e.key === '"') this.editorStringMode = !this.editorStringMode;
+      const typedFlow = this.flowDirectionFromCell(e.key);
+      if (typedFlow && !this.editorStringMode) this.editorDir = typedFlow;
       this.moveCursorByFlow();
       this.renderAll();
     }
@@ -540,6 +548,7 @@ class BefungeIDE {
     this.cursor = { r: 0, c: 0 };
     this.selection = { start: { r: 0, c: 0 }, end: { r: 0, c: 0 } };
     this.editorDir = { dr: 0, dc: 1, symbol: '>' };
+    this.editorStringMode = false;
     this.moveHistory = [];
 
     this.resetRuntime();
