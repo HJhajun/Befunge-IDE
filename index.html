@@ -7,87 +7,102 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <h1>Befunge IDE</h1>
-      <div class="toolbar row-wrap">
-        <button id="undoBtn">Undo</button>
-        <button id="redoBtn">Redo</button>
-        <button id="copyBtn">복사</button>
-        <button id="cutBtn">잘라내기</button>
-        <button id="pasteBtn">붙여넣기</button>
-        <button id="rotatePasteBtn">회전 붙여넣기</button>
-        <button id="flipHBtn">좌우 반전</button>
-        <button id="flipVBtn">상하 반전</button>
-      </div>
-      <div class="toolbar row-wrap">
-        <label>Rows <input id="rowsInput" type="number" min="1" value="25" /></label>
-        <label>Cols <input id="colsInput" type="number" min="1" value="80" /></label>
-        <button id="resizeBtn">크기 변경</button>
-        <button id="insertRowBtn">행 삽입</button>
-        <button id="deleteRowBtn">행 삭제</button>
-        <button id="insertColBtn">열 삽입</button>
-        <button id="deleteColBtn">열 삭제</button>
-      </div>
-      <div class="toolbar row-wrap">
-        <button id="runBtn">실행</button>
-        <button id="pauseBtn">일시정지</button>
-        <button id="stepBtn">Step</button>
-        <button id="resetBtn">리셋</button>
-        <label>속도 <input id="speedInput" type="range" min="1" max="60" value="10" /> <span id="speedLabel">10</span> step/s</label>
-      </div>
-      <div class="toolbar row-wrap">
-        <button id="saveBtn">.bf 저장</button>
-        <button id="openBtn">.bf 열기</button>
-        <input id="openFileInput" type="file" accept=".bf,text/plain" hidden />
-        <label>최근 파일
-          <select id="recentFilesSelect"><option value="">선택</option></select>
-        </label>
-        <label>예제
-          <select id="examplesSelect">
-            <option value="">선택</option>
-            <option value="hello">Hello World</option>
-            <option value="counter">Counter 0~9</option>
-            <option value="echo">Echo</option>
-          </select>
-        </label>
-      </div>
-    </header>
-
-    <main>
-      <section id="gridSection">
-        <div id="statusBar">
-          <span id="cursorStatus"></span>
-          <span id="directionStatus"></span>
-          <span id="stringModeStatus"></span>
-          <span id="execStatus"></span>
-        </div>
-        <div id="grid"></div>
-      </section>
-
-      <aside id="debugPanel">
-        <h2>디버거</h2>
-        <div class="panel-block">
-          <h3>스택</h3>
-          <pre id="stackView"></pre>
-        </div>
-        <div class="panel-block">
-          <h3>출력</h3>
-          <textarea id="outputView" readonly></textarea>
-        </div>
-        <div class="panel-block">
-          <h3>입력</h3>
-          <textarea id="inputView" placeholder="입력을 줄 단위로 작성"></textarea>
-        </div>
-        <div class="panel-block">
-          <h3>이동 경로 (최근)</h3>
-          <pre id="pathView"></pre>
-        </div>
+    <div class="app-shell">
+      <aside class="activity-bar" aria-hidden="true">
+        <button class="activity-item active" type="button" title="Explorer">🧭</button>
+        <button class="activity-item" type="button" title="Search">🔎</button>
+        <button class="activity-item" type="button" title="Run">▶️</button>
+        <button class="activity-item" type="button" title="Debug">🐞</button>
       </aside>
-    </main>
 
-    <footer>
-      <small>더블클릭: 브레이크포인트 토글 / Alt+방향키: 선택영역 이동 / Shift+방향키: 선택 확장</small>
-    </footer>
+      <div class="workspace">
+        <header>
+          <div class="titlebar">
+            <h1><span class="icon">🟦</span> Befunge IDE</h1>
+            <span class="title-meta">Befunge-93 Workspace</span>
+          </div>
+
+          <div class="toolbar row-wrap">
+            <button id="undoBtn"><span class="icon">↶</span> Undo</button>
+            <button id="redoBtn"><span class="icon">↷</span> Redo</button>
+            <button id="copyBtn"><span class="icon">📋</span> 복사</button>
+            <button id="cutBtn"><span class="icon">✂️</span> 잘라내기</button>
+            <button id="pasteBtn"><span class="icon">📥</span> 붙여넣기</button>
+            <button id="rotatePasteBtn"><span class="icon">🔄</span> 회전 붙여넣기</button>
+            <button id="flipHBtn"><span class="icon">↔️</span> 좌우 반전</button>
+            <button id="flipVBtn"><span class="icon">↕️</span> 상하 반전</button>
+          </div>
+          <div class="toolbar row-wrap">
+            <label><span class="icon">📐</span> Rows <input id="rowsInput" type="number" min="1" value="25" /></label>
+            <label><span class="icon">📏</span> Cols <input id="colsInput" type="number" min="1" value="80" /></label>
+            <button id="resizeBtn"><span class="icon">🗚</span> 크기 변경</button>
+            <button id="insertRowBtn"><span class="icon">➕</span> 행 삽입</button>
+            <button id="deleteRowBtn"><span class="icon">➖</span> 행 삭제</button>
+            <button id="insertColBtn"><span class="icon">➕</span> 열 삽입</button>
+            <button id="deleteColBtn"><span class="icon">➖</span> 열 삭제</button>
+          </div>
+          <div class="toolbar row-wrap">
+            <button id="runBtn"><span class="icon">▶️</span> 실행</button>
+            <button id="pauseBtn"><span class="icon">⏸️</span> 일시정지</button>
+            <button id="stepBtn"><span class="icon">⏭️</span> Step</button>
+            <button id="resetBtn"><span class="icon">⟲</span> 리셋</button>
+            <label><span class="icon">⚡</span> 속도 <input id="speedInput" type="range" min="1" max="60" value="10" /> <span id="speedLabel">10</span> step/s</label>
+          </div>
+          <div class="toolbar row-wrap">
+            <button id="saveBtn"><span class="icon">💾</span> .bf 저장</button>
+            <button id="openBtn"><span class="icon">📂</span> .bf 열기</button>
+            <input id="openFileInput" type="file" accept=".bf,text/plain" hidden />
+            <label><span class="icon">🕘</span> 최근 파일
+              <select id="recentFilesSelect"><option value="">선택</option></select>
+            </label>
+            <label><span class="icon">🧪</span> 예제
+              <select id="examplesSelect">
+                <option value="">선택</option>
+                <option value="hello">Hello World</option>
+                <option value="counter">Counter 0~9</option>
+                <option value="echo">Echo</option>
+              </select>
+            </label>
+          </div>
+        </header>
+
+        <main>
+          <section id="gridSection">
+            <div id="statusBar">
+              <span id="cursorStatus"></span>
+              <span id="directionStatus"></span>
+              <span id="stringModeStatus"></span>
+              <span id="execStatus"></span>
+            </div>
+            <div id="grid"></div>
+          </section>
+
+          <aside id="debugPanel">
+            <h2><span class="icon">🐞</span> 디버거</h2>
+            <div class="panel-block">
+              <h3><span class="icon">🧱</span> 스택</h3>
+              <pre id="stackView"></pre>
+            </div>
+            <div class="panel-block">
+              <h3><span class="icon">🖨️</span> 출력</h3>
+              <textarea id="outputView" readonly></textarea>
+            </div>
+            <div class="panel-block">
+              <h3><span class="icon">⌨️</span> 입력</h3>
+              <textarea id="inputView" placeholder="입력을 줄 단위로 작성"></textarea>
+            </div>
+            <div class="panel-block">
+              <h3><span class="icon">🛰️</span> 이동 경로 (최근)</h3>
+              <pre id="pathView"></pre>
+            </div>
+          </aside>
+        </main>
+
+        <footer>
+          <small>더블클릭: 브레이크포인트 토글 / Alt+방향키: 선택영역 이동 / Shift+방향키: 선택 확장</small>
+        </footer>
+      </div>
+    </div>
 
     <script src="app.js"></script>
   </body>
